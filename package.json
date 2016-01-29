@@ -2,6 +2,7 @@
   "name": "capped-cache",
   "version": "1.0.0",
   "description": "An abstraction of NodeCache that supports a max size option",
+  "readme": "https://github.com/NET-A-PORTER/capped-cache/blob/master/README.md",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
