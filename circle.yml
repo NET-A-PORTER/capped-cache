@@ -1,0 +1,14 @@
+dependencies:
+  pre:
+    - npm i
+    - sh login.sh
+
+test:
+  override:
+    - npm test
+
+deployment:
+  production:
+    tag: /release-.*/
+    commands:
+      - npm publish ./
