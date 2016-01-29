@@ -2,6 +2,7 @@
 
 An abstraction of the [NodeCache](https://github.com/tcs-de/nodecache) memory cache that supports a max size option.
 
+[![Build status](https://circleci.com/gh/NET-A-PORTER/capped-cache.svg?style=shield)](https://circleci.com/gh/NET-A-PORTER/capped-cache)
 
 ## Node.js Versions
 
