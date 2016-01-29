@@ -108,7 +108,7 @@ describe('CappedCache', function () {
 			var actualResult;	
 			
 			sinon.stub(cappedCache._cache, 'getStats')
-				 .returns({ keys: MAX_SIZE + 1 });
+				 .returns({ keys: MAX_SIZE });
 				 
 			actualResult = cappedCache._isFull();
 			
@@ -116,12 +116,12 @@ describe('CappedCache', function () {
 		});
 	});
 	
-	describe('the reset method', function () {
+	describe('the flushAll method', function () {
 		it('should flush the cache', function () {
 			mockNodeCache.expects('flushAll')
 						 .once();
 						 
-			cappedCache.reset();
+			cappedCache.flushAll();
 			
 			mockNodeCache.verify();
 		});

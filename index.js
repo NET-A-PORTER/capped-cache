@@ -28,10 +28,10 @@ CappedCache.prototype._isFull = function isFull() {
 		return false;
 	}
 
-	return this._cache.getStats().keys > this._maxSize;
+	return this._cache.getStats().keys === this._maxSize;
 }
 
-CappedCache.prototype.reset = function reset() {
+CappedCache.prototype.flushAll = function flushAll() {
 	this._cache.flushAll();
 };
 
