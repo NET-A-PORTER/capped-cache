@@ -10,5 +10,5 @@ deployment:
   production:
     tag: /release-.*/
     commands:
-	  - sh login.sh
+      - sh login.sh
       - npm publish ./
