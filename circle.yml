@@ -1,7 +1,6 @@
 dependencies:
   pre:
     - npm i
-    - sh login.sh
 
 test:
   override:
@@ -11,4 +10,5 @@ deployment:
   production:
     tag: /release-.*/
     commands:
+	  - sh login.sh
       - npm publish ./
