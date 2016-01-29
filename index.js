@@ -2,7 +2,9 @@
 
 var NodeCache = require('node-cache');
 
-function CappedCache(options) {
+function CappedCache(userOptions) {
+	var options = userOptions || {};
+	
 	this._maxSize = options.maxSize;
 	this._cache = new NodeCache({ stdTTL: options.defaultTTL, useClones: false });
 }
@@ -26,7 +28,7 @@ CappedCache.prototype._isFull = function isFull() {
 		return false;
 	}
 
-	return this._cache.getStats().keys <= this._maxSize;
+	return this._cache.getStats().keys > this._maxSize;
 }
 
 CappedCache.prototype.reset = function reset() {

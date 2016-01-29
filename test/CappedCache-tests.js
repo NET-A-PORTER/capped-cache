@@ -2,7 +2,7 @@
 
 var CappedCache = require('../index');
 
-var MAX_SIZE = 2;
+var MAX_SIZE = 1;
 var DEFAULT_TTL = 5;
 
 describe('CappedCache', function () {
@@ -20,6 +20,9 @@ describe('CappedCache', function () {
 	
 	afterEach(function () {
 		mockNodeCache.restore();
+		
+		if (cappedCache._isFull.restore) cappedCache._isFull.restore();
+		if (cappedCache._cache.getStats.restore) cappedCache._cache.getStats.restore();
 	});
 	
 	describe('the get method', function () {
@@ -39,12 +42,6 @@ describe('CappedCache', function () {
     });
 	
 	describe('the set method', function () {
-		afterEach(function () {
-			if (cappedCache._isFull.restore) {
-				cappedCache._isFull.restore();
-			}
-		});
-		
 		it('should set an item when the cache has space', function () {
 			var key = 'myData';
 			var data = 'foobar';
@@ -82,6 +79,51 @@ describe('CappedCache', function () {
 			
 			mockNodeCache.verify();
 			expect(actualResult).to.equal(expectedResult);
+		});
+	});
+	
+	describe('the _isFull method', function () {
+		it('should return false if the maxSize option is not set', function () {
+			var infiniteCache = new CappedCache();
+			var expectedResult = false;
+			var actualResult = infiniteCache._isFull();
+			
+			expect(actualResult).to.equal(expectedResult);
+		});
+		
+		it('should return false if the number of keys does not exceed the max size', function () {
+			var expectedResult = false;
+			var actualResult;	
+			
+			sinon.stub(cappedCache._cache, 'getStats')
+				 .returns({ keys: 0 });
+				 
+			actualResult = cappedCache._isFull();
+			
+			expect(actualResult).to.equal(expectedResult);		 
+		});
+		
+		it('should return true if the number of keys exceeds the max size', function () {
+			var expectedResult = true;
+			var actualResult;	
+			
+			sinon.stub(cappedCache._cache, 'getStats')
+				 .returns({ keys: MAX_SIZE + 1 });
+				 
+			actualResult = cappedCache._isFull();
+			
+			expect(actualResult).to.equal(expectedResult);		 
+		});
+	});
+	
+	describe('the reset method', function () {
+		it('should flush the cache', function () {
+			mockNodeCache.expects('flushAll')
+						 .once();
+						 
+			cappedCache.reset();
+			
+			mockNodeCache.verify();
 		});
 	});
 });
